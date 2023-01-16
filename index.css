@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+}
+
+body {
+    background: #000;
+    height: max-content;
+}
+
+#intro {
+    width: 35%;
+    height: max-content;
+    text-align: center;
+    margin: auto auto;
+    margin-top: 209px;
+    letter-spacing: 4px;
+    font-size: 4em;
+    font-weight: bold;
+}
+
+css-doodle {
+    width: 39%;
+    position: fixed;
+    top: 10vh;
+    left: 65vh;
+    z-index: -1;
+    height: 80vh;
+}
+
+.singleEmail,
+.emails {
+    width: 80%;
+    margin: 45px auto;
+    padding: 10px 12px;
+    height: max-content;
+}
+
+.singleInput,
+.singleResult,
+.emailsInput,
+.emailsResult,
+.download {
+    width: 90%;
+    height: max-content;
+    margin: auto auto;
+    padding: 10px 12px;
+}
+
+.singleInput h3,
+.emailsInput h3 {
+    font-size: 1.5em;
+    letter-spacing: 2px;
+    margin: 2px auto;
+}
+
+input {
+    margin: 5px auto;
+    padding: 5px 6px;
+    border: 2px solid #fff;
+    background: transparent;
+    color: #fff;
+    font-size: 1.1em;
+    letter-spacing: 2px;
+}
+
+button {
+    margin: 10px 10px;
+    padding: 7px;
+    background: #fff;
+    color: #000;
+    letter-spacing: 2px;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+.singleResult,
+.emailsResult {
+    width: 90%;
+    margin-top: 2px;
+}
+
+.singleResult p,
+.singleResult h4,
+.emailsResult h4 {
+    height: max-content;
+    letter-spacing: 2px;
+    padding: 5px;
+}
+
+.emailsResult p {
+    padding: 5px 6px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.emailsResult p ul {
+    margin: 9px;
+}
+
+#download {
+    margin: auto auto;
+}
+
+@media (max-width: 979px) {
+    #intro {
+        width: 90%;
+        font-size: 2em;
+        padding: 5px 6px;
+    }
+
+    css-doodle {
+        position: fixed;
+        left: 18%;
+        width: 61.8vmin;
+        height: 61.8vmin;
+        top: 18%;
+    }
+
+    .singleEmail,
+    .emails {
+        width: 90%;
+    }
+
+    input {
+        font-size: 0.8em;
+        letter-spacing: normal;
+    }
+
+    input[type="email"] {
+        font-size: 1.1em;
+        letter-spacing: 2px;
+    }
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <css-doodle>
+        :doodle {
+        @grid: 15 / 61.8vmin;
+        @shape: circle;
+        }
+
+        border-radius: 50%;
+        border: calc(1px + .05vmin)
+        solid transparent;
+
+        --r: @rand(360deg);
+        --n: calc(
+        @abs(@abs(@row() - 8)
+        + @abs(@col() - 8) - 15) / 15
+        );
+
+        transform: rotate(var(--r));
+        border-left-color: hsl(
+        calc(var(--n) * 360 + 120), 60%, 60%
+        );
+
+        animation:
+        spin calc(.6s / var(--n)) linear infinite;
+
+        @keyframes spin {
+        to {
+        transform: rotate(
+        calc(var(--r) + @pick(1turn, -1turn))
+        );
+        }
+        }
+    </css-doodle>
+    <h1 id="intro">
+        Let's Validate Your Email from us...!
+    </h1>
+    <div class="singleEmail">
+        <div class="singleInput">
+            <h3>
+                For only one email address verification
+            </h3>
+            <input type="email" placeholder="Enter Email address" id="singleEmail"><button id="verify">Verify</button>
+        </div>
+        <div class="singleResult">
+            <h4>
+                Result show here :
+            </h4>
+            <p id="singleResult">
+                We will verify your email as soon as possible...!
+            </p>
+        </div>
+    </div>
+    <div class="emails">
+        <div class="emailsInput">
+            <h3>
+                For mutliple email verification please upload csv file from below
+                (please upload only csv files)
+            </h3>
+            <h5 style="letter-spacing: 2px;">
+                Please put all emails in one column which has name "Email"
+            </h5>
+            <input type="file" id="uploadFile" accept=".csv">
+            <button id="uploadButton">Upload File</button>
+        </div>
+        <div class="emailsResult">
+            <h4>
+                Result show here :
+            </h4>
+            <p id="doubleEmail">
+
+            </p>
+        </div>
+        <div class="download">
+            <button id="download">Download CSV file</button>
+        </div>
+    </div>
+
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"
+    integrity="sha512-SGWgwwRA8xZgEoKiex3UubkSkV1zSE1BS6O4pXcaxcNtUlQsOmOmhVnDwIvqGRfEmuz83tIGL13cXMZn6upPyg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/css-doodle@0.32.2/css-doodle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/deep-email-validator@0.1.21/dist/index.min.js"></script>
+<script src="index.js"></script>
+
+</html>
