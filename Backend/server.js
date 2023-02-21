@@ -11,9 +11,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/public", express.static(process.cwd() + "/public"));
 
 //function for email validation
-async function isEmailValid(email) {
+const isEmailValid = async (email) => {
     return emailValidator.validate(email)
 }
+
+const smtpConnection = async (email) => {
+
+ }
+
 
 //1) route for csv files email validation
 app.post("/validationCsv", async (req, res) => {
@@ -24,6 +29,9 @@ app.post("/validationCsv", async (req, res) => {
         }
         for (let email of data) {
             const { valid, reason, validators } = await isEmailValid(email.Email);
+            if(reason==="smtp"){
+                smtpConnection(email.Email)
+            }
             let result = { valid, reason, validators, email: email.Email }
             results.reasons.push(result)
         }
