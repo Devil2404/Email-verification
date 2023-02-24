@@ -101,9 +101,14 @@ button {
 .emailsResult p {
     padding: 5px 6px;
     display: flex;
-    justify-content: space-evenly;
     flex-wrap: wrap;
 }
+
+img {
+    width: 25px;
+    margin-left: 10px;
+}
+
 
 .emailsResult p ul {
     margin: 9px;
@@ -111,6 +116,23 @@ button {
 
 #download {
     margin: auto auto;
+}
+
+p li {
+    display: flex;
+    align-items: center;
+}
+
+hr {
+    width: 80%;
+    margin: auto auto;
+}
+
+h6 {
+    font-size: 20px;
+    width: max-content;
+    margin: 10px auto;
+    letter-spacing: 3px
 }
 
 @media (max-width: 979px) {

@@ -2,23 +2,22 @@ const express = require('express');
 const emailValidator = require("deep-email-validator")
 const cors = require("cors");
 const multiparty = require("multiparty");
+const path = require("path");
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cors({ origin: "*" }));
 app.use(express.urlencoded({ extended: true }));
-app.use("/public", express.static(process.cwd() + "/public"));
+app.use(express.static(path.join(__dirname,"../index.html")));
 
+app.get('*',function(req,res){
+    res.sendFile(path.join(__dirname,"../index.html"))
+})
 //function for email validation
 const isEmailValid = async (email) => {
     return emailValidator.validate(email)
 }
-
-const smtpConnection = async (email) => {
-
- }
-
 
 //1) route for csv files email validation
 app.post("/validationCsv", async (req, res) => {
@@ -29,9 +28,6 @@ app.post("/validationCsv", async (req, res) => {
         }
         for (let email of data) {
             const { valid, reason, validators } = await isEmailValid(email.Email);
-            if(reason==="smtp"){
-                smtpConnection(email.Email)
-            }
             let result = { valid, reason, validators, email: email.Email }
             results.reasons.push(result)
         }

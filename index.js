@@ -5,6 +5,7 @@ const singleEmail = document.getElementById("singleEmail")
 const singleResult = document.getElementById("singleResult")
 const doubleEmail = document.getElementById("doubleEmail")
 const downloadButton = document.getElementById("download")
+let t = true
 let csv = {
     fields: ["Emails", "valid"],
     data: []
@@ -70,19 +71,20 @@ const sendEmail = (mail) => {
 }
 
 //innerHtml generate
-const stringgenerator = (id, result) => {
+const stringgenerator = (result) => {
     const { disposable, mx, smtp, regex, typo } = result.validators
+    if (!smtp.valid && "reason" in smtp && smtp.reason === "Timeout") {
+        t = false
+    }
     let str = `
     ${smtp.reason === "Timeout" ? "Valid Email" : "Not valid Email"}
     <br/>
-    Reason : ${result.reason}
-    <li style="color:${!regex.valid ? "red" : "green"}">Regex : ${regex.valid}</li>
-    <li style="color:${!disposable.valid ? "red" : "green"}">Disposable : ${disposable.valid}</li>
-    <li style="color:${!typo.valid ? "red" : "green"}">Typo : ${typo.valid}</li>
-    <li style="color:${!mx.valid ? "red" : "green"}">mx : ${mx.valid}</li>
-    <li style="color:${!smtp.valid ? "red" : "green"}">SMTP : ${smtp.valid} <br/>
-    Reason is ${smtp.reason}.
-    </li>  
+    ${smtp.reason === "Timeout" ? "" : `Reason : ${result.reason}`}
+    <li>Email structure ${!regex.valid ? '<img src="icons8-close.svg" alt="">' : '<img src="icons8-verified-account-32.png" alt="">'}</li>
+    <li>Disposable ${!disposable.valid ? '<img src="icons8-close.svg" alt="">' : '<img src="icons8-verified-account-32.png" alt="">'}</li>
+    <li>Typo ${!typo.valid ? '<img src="icons8-close.svg" alt="">' : '<img src="icons8-verified-account-32.png" alt="">'}</li>
+    <li>MX Records${!mx.valid ? '<img src="icons8-close.svg" alt="">' : '<img src="icons8-verified-account-32.png" alt="">'}</li>
+    <li>SMTP Connection ${t ? '<img src="icons8-close.svg" alt="">' : '<img src="icons8-verified-account-32.png" alt="">'}</li>  
     `
     return str
 }
@@ -90,39 +92,17 @@ const stringgenerator = (id, result) => {
 // for showing result on page
 const emailResult = (result, id) => {
     if (id === "s") {
-        if (result.reason === "smtp") {
-            let str = stringgenerator("t", result)
-            console.log(result)
-            singleResult.innerHTML = str;
-        }
-        else {
-            let str = stringgenerator("f", result)
-            console.log(result)
-            singleResult.innerHTML = str;
-        }
+        let str = stringgenerator(result)
+        singleResult.innerHTML = str;
     }
     if (id === "d") {
         let str = ""
         let i = 1;
         for (let reason of result.reasons) {
-            console.log(reason)
-            const { disposable, mx, smtp, regex, typo } = reason.validators
-            str += `
-            <ul>
-            ${i})  ${reason.email}
-            <br/>
-            ${smtp.reason === "Timeout" ? "Valid Email" : "Not valid Email"}
-            <br/>
-            Reason : ${reason.reason}
-            <li style="color:${!regex.valid ? "red" : "green"}">Regex : ${regex.valid}</li>
-            <li style="color:${!disposable.valid ? "red" : "green"}">Disposable : ${disposable.valid}</li>
-            <li style="color:${!typo.valid ? "red" : "green"}">Typo : ${typo.valid}</li>
-            <li style="color:${!mx.valid ? "red" : "green"}">mx : ${mx.valid}</li>
-            <li style="color:${!smtp.valid ? "red" : "green"}">SMTP : ${smtp.valid} <br/>
-            Reason is ${smtp.reason.errno || smtp.reason}.
-            </li> 
-            </ul>
-            `
+            const { smtp } = reason.validators
+            str += `<ul>${i})  ${reason.email}  <br/>`
+            str += stringgenerator(reason)
+            str += `</ul>`
             i++;
             csv.data.push(
                 [reason.email, smtp.reason === "Timeout" ? "Valid Email" : "Not valid Email"]
