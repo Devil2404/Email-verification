@@ -28,6 +28,7 @@ uploadButton.addEventListener("click", () => {
             })
         alert("Your file is succefully uploaded")
         uploadFile.value = ""
+        doubleEmail.innerHTML = ""
     }
 })
 
@@ -42,6 +43,7 @@ verifyButton.addEventListener("click", () => {
             email: singleEmail.value
         }
         singleEmail.value = ""
+        singleResult.innerHTML = ""
         sendEmail(result)
     }
 })
@@ -72,19 +74,15 @@ const sendEmail = (mail) => {
 
 //innerHtml generate
 const stringgenerator = (result) => {
-    const { disposable, mx, smtp, regex, typo } = result.validators
-    if (!smtp.valid && "reason" in smtp && smtp.reason === "Timeout") {
-        t = false
-    }
+    const { disposable, mx, smtp, regex, roleBase } = result
     let str = `
-    ${smtp.reason === "Timeout" ? "Valid Email" : "Not valid Email"}
+    ${smtp.valid ? "Valid Email" : "Not valid Email"}
     <br/>
-    ${smtp.reason === "Timeout" ? "" : `Reason : ${result.reason}`}
     <li>Email structure ${!regex.valid ? '<img src="icons8-close.svg" alt="">' : '<img src="icons8-verified-account-32.png" alt="">'}</li>
     <li>Disposable ${!disposable.valid ? '<img src="icons8-close.svg" alt="">' : '<img src="icons8-verified-account-32.png" alt="">'}</li>
-    <li>Typo ${!typo.valid ? '<img src="icons8-close.svg" alt="">' : '<img src="icons8-verified-account-32.png" alt="">'}</li>
     <li>MX Records${!mx.valid ? '<img src="icons8-close.svg" alt="">' : '<img src="icons8-verified-account-32.png" alt="">'}</li>
-    <li>SMTP Connection ${t ? '<img src="icons8-close.svg" alt="">' : '<img src="icons8-verified-account-32.png" alt="">'}</li>  
+    <li>Role Based Email${!roleBase.valid ? '<img src="icons8-close.svg" alt="">' : '<img src="icons8-verified-account-32.png" alt="">'}</li>
+    <li>SMTP Connection ${!smtp.valid ? '<img src="icons8-close.svg" alt="">' : '<img src="icons8-verified-account-32.png" alt="">'}</li>  
     `
     return str
 }
@@ -93,19 +91,20 @@ const stringgenerator = (result) => {
 const emailResult = (result, id) => {
     if (id === "s") {
         let str = stringgenerator(result)
+        console.log(result)
         singleResult.innerHTML = str;
     }
     if (id === "d") {
         let str = ""
         let i = 1;
         for (let reason of result.reasons) {
-            const { smtp } = reason.validators
+            console.log(reason)
             str += `<ul>${i})  ${reason.email}  <br/>`
-            str += stringgenerator(reason)
+            str += stringgenerator(reason.test)
             str += `</ul>`
             i++;
             csv.data.push(
-                [reason.email, smtp.reason === "Timeout" ? "Valid Email" : "Not valid Email"]
+                [reason.email, reason.test.smtp.valid ? "Valid Email" : "Not valid Email"]
             )
         }
         alert("Now you can also download csv files")
